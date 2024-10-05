@@ -20,9 +20,9 @@ public class TouristRoutesController : ControllerBase
 
     [HttpGet]
     [HttpHead]
-    public IActionResult GetAllRoutes()
+    public IActionResult GetAllRoutes([FromQuery] string keyword)
     {
-        var routesFromRepo = _routeRepository.GetAllRoutes();
+        var routesFromRepo = _routeRepository.GetAllRoutes(keyword);
 
         if (routesFromRepo == null || routesFromRepo.Count() < 0)
         {

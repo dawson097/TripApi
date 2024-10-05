@@ -13,11 +13,18 @@ public class TouristRouteRepository : ITouristRouteRepository
         _context = context;
     }
 
-    public IEnumerable<TouristRoute> GetAllRoutes()
+    public IEnumerable<TouristRoute> GetAllRoutes(string keyword)
     {
-        return _context.TouristRoutes
-            .Include(route => route.TouristRoutePictures)
-            .ToList();
+        IQueryable<TouristRoute> queryRes = _context.TouristRoutes
+            .Include(route => route.TouristRoutePictures);
+
+        if (!string.IsNullOrWhiteSpace(keyword))
+        {
+            keyword = keyword.Trim();
+            queryRes = queryRes.Where(route => route.Title.Contains(keyword));
+        }
+
+        return queryRes.ToList();
     }
 
     public TouristRoute GetRouteById(Guid routeId)
