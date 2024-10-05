@@ -28,5 +28,11 @@ public class TouristRouteProfile : Profile
                 des => des.DepartureCity,
                 opt => opt.MapFrom(src => src.DepartureCity.ToString())
             );
+
+        CreateMap<TouristRouteAddDto, TouristRoute>()
+            .ForMember(
+                des => des.Id,
+                opt => opt.MapFrom(src => Guid.NewGuid())
+            );
     }
 }

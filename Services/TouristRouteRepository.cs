@@ -4,11 +4,11 @@ using TripApi.Models;
 
 namespace TripApi.Services;
 
-public class TouristRouteRepository : ITouristRouteRepository
+public class TouristRouteRepository : CommonRepository, ITouristRouteRepository
 {
     private readonly AppDbContext _context;
 
-    public TouristRouteRepository(AppDbContext context)
+    public TouristRouteRepository(AppDbContext context) : base(context)
     {
         _context = context;
     }
@@ -40,5 +40,12 @@ public class TouristRouteRepository : ITouristRouteRepository
     public TouristRoute GetRouteById(Guid routeId)
     {
         return _context.TouristRoutes.FirstOrDefault(route => route.Id == routeId);
+    }
+
+    public void AddRoute(TouristRoute route)
+    {
+        if (route == null) throw new ArgumentNullException(nameof(route));
+
+        _context.TouristRoutes.Add(route);
     }
 }

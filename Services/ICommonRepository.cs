@@ -6,4 +6,6 @@
 public interface ICommonRepository
 {
     bool RouteExists(Guid routeId);
+
+    bool Save();
 }

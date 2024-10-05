@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TripApi.Dtos.TouristRoute;
+using TripApi.Models;
 using TripApi.ResourceParameters;
 using TripApi.Services;
 
@@ -34,7 +35,7 @@ public class TouristRoutesController : ControllerBase
         return Ok(_mapper.Map<IEnumerable<TouristRouteDto>>(routesFromRepo));
     }
 
-    [HttpGet("{routeId:guid}")]
+    [HttpGet("{routeId:guid}", Name = "GetRouteById")]
     [HttpHead]
     public IActionResult GetRouteById(Guid routeId)
     {
@@ -46,5 +47,18 @@ public class TouristRoutesController : ControllerBase
         }
 
         return Ok(_mapper.Map<TouristRouteDto>(routeFromRepo));
+    }
+
+    [HttpPost]
+    public IActionResult AddRoute([FromBody] TouristRouteAddDto routeAddDto)
+    {
+        var routeModel = _mapper.Map<TouristRoute>(routeAddDto);
+
+        _routeRepository.AddRoute(routeModel);
+        _routeRepository.Save();
+
+        var routeToReturn = _mapper.Map<TouristRouteDto>(routeModel);
+
+        return CreatedAtRoute("GetRouteById", new { routeId = routeToReturn.Id }, routeToReturn);
     }
 }
