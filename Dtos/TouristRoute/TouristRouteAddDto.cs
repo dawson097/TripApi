@@ -1,4 +1,6 @@
-﻿namespace TripApi.Dtos.TouristRoute;
+﻿using TripApi.Dtos.TouristRoutePicture;
+
+namespace TripApi.Dtos.TouristRoute;
 
 public class TouristRouteAddDto
 {

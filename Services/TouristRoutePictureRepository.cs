@@ -23,4 +23,14 @@ public class TouristRoutePictureRepository : CommonRepository, ITouristRoutePict
         return _context.TouristRoutePictures.Where(picture => picture.Id == pictureId)
             .FirstOrDefault();
     }
+
+    public void AddPicture(Guid routeId, TouristRoutePicture routePicture)
+    {
+        if (routeId == Guid.Empty) throw new ArgumentNullException(nameof(routeId));
+        if (routePicture == null) throw new ArgumentNullException(nameof(routePicture));
+
+        routePicture.TouristRouteId = routeId;
+
+        _context.TouristRoutePictures.Add(routePicture);
+    }
 }

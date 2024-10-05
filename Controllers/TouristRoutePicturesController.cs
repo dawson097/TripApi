@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TripApi.Dtos.TouristRoutePicture;
+using TripApi.Models;
 using TripApi.Services;
 
 namespace TripApi.Controllers;
@@ -36,7 +37,7 @@ public class TouristRoutePicturesController : ControllerBase
         return Ok(_mapper.Map<IEnumerable<TouristRoutePictureDto>>(picturesFromRepo));
     }
 
-    [HttpGet("{pictureId:int}")]
+    [HttpGet("{pictureId:int}", Name = "GetPictureById")]
     public IActionResult GetPictureById(Guid routeId, int pictureId)
     {
         if (!_pictureRepository.RouteExists(routeId))
@@ -52,5 +53,27 @@ public class TouristRoutePicturesController : ControllerBase
         }
 
         return Ok(_mapper.Map<TouristRoutePictureDto>(pictureFromRepo));
+    }
+
+    [HttpPost]
+    public IActionResult AddRoutePicture([FromRoute] Guid routeId, [FromBody] TouristRoutePictureAddDto pictureAddDto)
+    {
+        if (!_pictureRepository.RouteExists(routeId))
+        {
+            return NotFound("找不到任何旅游路线");
+        }
+
+        var pictureModel = _mapper.Map<TouristRoutePicture>(pictureAddDto);
+
+        _pictureRepository.AddPicture(routeId, pictureModel);
+        _pictureRepository.Save();
+
+        var pictureToReturn = _mapper.Map<TouristRoutePictureDto>(pictureModel);
+
+        return CreatedAtRoute("GetPictureById", new
+        {
+            routeId = pictureModel.TouristRouteId,
+            picture = pictureModel.Id
+        }, pictureToReturn);
     }
 }

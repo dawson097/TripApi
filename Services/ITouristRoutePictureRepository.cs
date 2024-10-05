@@ -20,4 +20,11 @@ public interface ITouristRoutePictureRepository : ICommonRepository
     /// <param name="pictureId"></param>
     /// <returns></returns>
     TouristRoutePicture GetPictureById(int pictureId);
+
+    /// <summary>
+    /// Add tourist route picture
+    /// </summary>
+    /// <param name="routeId"></param>
+    /// <param name="routePicture">route picture entity</param>
+    void AddPicture(Guid routeId, TouristRoutePicture routePicture);
 }
