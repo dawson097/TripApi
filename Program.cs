@@ -11,7 +11,6 @@ builder.Services.AddControllers(options =>
 }).AddXmlDataContractSerializerFormatters();
 
 builder.Services.AddTransient<ITouristRouteRepository, TouristRouteRepository>();
-builder.Services.AddTransient<ITouristRoutePictureRepository, TouristRoutePictureRepository>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
