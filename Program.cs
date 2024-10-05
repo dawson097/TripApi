@@ -5,7 +5,10 @@ using TripApi.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to container
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.ReturnHttpNotAcceptable = true;
+}).AddXmlDataContractSerializerFormatters();
 
 builder.Services.AddTransient<ITouristRouteRepository, TouristRouteRepository>();
 
