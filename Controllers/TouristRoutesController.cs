@@ -19,6 +19,7 @@ public class TouristRoutesController : ControllerBase
     }
 
     [HttpGet]
+    [HttpHead]
     public IActionResult GetAllRoutes()
     {
         var routesFromRepo = _routeRepository.GetAllRoutes();
@@ -32,6 +33,7 @@ public class TouristRoutesController : ControllerBase
     }
 
     [HttpGet("{routeId:guid}")]
+    [HttpHead]
     public IActionResult GetRouteById(Guid routeId)
     {
         var routeFromRepo = _routeRepository.GetRouteById(routeId);
