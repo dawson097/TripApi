@@ -7,7 +7,17 @@ namespace TripApi.Services;
 /// </summary>
 public interface ITouristRoutePictureRepository : ICommonRepository
 {
+    /// <summary>
+    /// Get all of tourist route picture from single tourist route with route id
+    /// </summary>
+    /// <param name="routeId"></param>
+    /// <returns></returns>
     IEnumerable<TouristRoutePicture> GetAllPicturesByRouteId(Guid routeId);
 
+    /// <summary>
+    /// Get single tourist route picture with picture id
+    /// </summary>
+    /// <param name="pictureId"></param>
+    /// <returns></returns>
     TouristRoutePicture GetPictureById(int pictureId);
 }

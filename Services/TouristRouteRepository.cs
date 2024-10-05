@@ -1,4 +1,5 @@
-﻿using TripApi.Database;
+﻿using Microsoft.EntityFrameworkCore;
+using TripApi.Database;
 using TripApi.Models;
 
 namespace TripApi.Services;
@@ -14,7 +15,9 @@ public class TouristRouteRepository : ITouristRouteRepository
 
     public IEnumerable<TouristRoute> GetAllRoutes()
     {
-        return _context.TouristRoutes.ToList();
+        return _context.TouristRoutes
+            .Include(route => route.TouristRoutePictures)
+            .ToList();
     }
 
     public TouristRoute GetRouteById(Guid routeId)
