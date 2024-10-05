@@ -1,11 +1,14 @@
-﻿using TripApi.Dtos.TouristRoutePicture;
+﻿using System.ComponentModel.DataAnnotations;
+using TripApi.Dtos.TouristRoutePicture;
 
 namespace TripApi.Dtos.TouristRoute;
 
 public class TouristRouteAddDto
 {
+    [Required(ErrorMessage = "标题不可为空"), MaxLength(100)]
     public string Title { get; set; }
 
+    [Required(ErrorMessage = "描述不可为空"), MaxLength(1500)]
     public string Description { get; set; }
 
     public decimal Price { get; set; }
