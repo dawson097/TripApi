@@ -13,7 +13,7 @@ public class TouristRouteRepository : ITouristRouteRepository
         _context = context;
     }
 
-    public IEnumerable<TouristRoute> GetAllRoutes(string keyword)
+    public IEnumerable<TouristRoute> GetAllRoutes(string keyword, string ratingOperator, int? ratingValue)
     {
         IQueryable<TouristRoute> queryRes = _context.TouristRoutes
             .Include(route => route.TouristRoutePictures);
@@ -22,6 +22,16 @@ public class TouristRouteRepository : ITouristRouteRepository
         {
             keyword = keyword.Trim();
             queryRes = queryRes.Where(route => route.Title.Contains(keyword));
+        }
+
+        if (ratingValue > 0)
+        {
+            queryRes = ratingOperator switch
+            {
+                "largerThan" => queryRes = queryRes.Where(route => route.Rating >= ratingValue),
+                "lessThan" => queryRes = queryRes.Where(route => route.Rating <= ratingValue),
+                _ => queryRes = queryRes.Where(route => route.Rating == ratingValue)
+            };
         }
 
         return queryRes.ToList();

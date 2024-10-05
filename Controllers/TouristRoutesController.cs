@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TripApi.Dtos.TouristRoute;
+using TripApi.ResourceParameters;
 using TripApi.Services;
 
 namespace TripApi.Controllers;
@@ -20,11 +21,12 @@ public class TouristRoutesController : ControllerBase
 
     [HttpGet]
     [HttpHead]
-    public IActionResult GetAllRoutes([FromQuery] string keyword)
+    public IActionResult GetAllRoutes([FromQuery] TouristRouteResourceParameters parameters)
     {
-        var routesFromRepo = _routeRepository.GetAllRoutes(keyword);
+        var routesFromRepo = _routeRepository
+            .GetAllRoutes(parameters.Keyword, parameters.RatingOperator, parameters.RatingValue);
 
-        if (routesFromRepo == null || routesFromRepo.Count() < 0)
+        if (routesFromRepo == null || routesFromRepo.Count() <= 0)
         {
             return NotFound("找不到任何旅游路线");
         }
