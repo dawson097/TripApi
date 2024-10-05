@@ -8,4 +8,6 @@ namespace TripApi.Services;
 public interface ITouristRoutePictureRepository : ICommonRepository
 {
     IEnumerable<TouristRoutePicture> GetAllPicturesByRouteId(Guid routeId);
+
+    TouristRoutePicture GetPictureById(int pictureId);
 }

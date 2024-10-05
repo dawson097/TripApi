@@ -17,4 +17,10 @@ public class TouristRoutePictureRepository : CommonRepository, ITouristRoutePict
         return _context.TouristRoutePictures.Where(picture => picture.TouristRouteId == routeId)
             .ToList();
     }
+
+    public TouristRoutePicture GetPictureById(int pictureId)
+    {
+        return _context.TouristRoutePictures.Where(picture => picture.Id == pictureId)
+            .FirstOrDefault();
+    }
 }

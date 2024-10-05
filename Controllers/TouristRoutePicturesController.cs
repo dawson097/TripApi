@@ -19,7 +19,7 @@ public class TouristRoutePicturesController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetPicturesByRouteId(Guid routeId)
+    public IActionResult GetAllPicturesByRouteId(Guid routeId)
     {
         if (!_pictureRepository.RouteExists(routeId))
         {
@@ -28,11 +28,29 @@ public class TouristRoutePicturesController : ControllerBase
 
         var picturesFromRepo = _pictureRepository.GetAllPicturesByRouteId(routeId);
 
-        if (picturesFromRepo != null || picturesFromRepo.Count() <= 0)
+        if (picturesFromRepo == null || picturesFromRepo.Count() <= 0)
         {
             return NotFound("找不到任何图片");
         }
 
         return Ok(_mapper.Map<IEnumerable<TouristRoutePictureDto>>(picturesFromRepo));
+    }
+
+    [HttpGet("{pictureId:int}")]
+    public IActionResult GetPictureById(Guid routeId, int pictureId)
+    {
+        if (!_pictureRepository.RouteExists(routeId))
+        {
+            return NotFound("找不到任何旅游路线");
+        }
+
+        var pictureFromRepo = _pictureRepository.GetPictureById(pictureId);
+
+        if (pictureFromRepo == null)
+        {
+            return NotFound($"找不到该图片，图片id: {pictureId}");
+        }
+
+        return Ok(_mapper.Map<TouristRoutePictureDto>(pictureFromRepo));
     }
 }
