@@ -29,4 +29,7 @@ public class TouristRouteAddDto
     public string TripType { get; set; }
 
     public string DepartureCity { get; set; }
+
+    public ICollection<TouristRoutePictureAddDto> TouristRoutePictures { get; set; }
+        = new List<TouristRoutePictureAddDto>();
 }
