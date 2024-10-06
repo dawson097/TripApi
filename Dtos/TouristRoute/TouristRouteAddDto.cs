@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using TripApi.Dtos.TouristRoutePicture;
+using TripApi.ValidationAttributes.TouristRoute;
 
 namespace TripApi.Dtos.TouristRoute;
 
+[TitleMustDifferentFromDescription]
 public class TouristRouteAddDto
 {
     [Required(ErrorMessage = "标题不可为空"), MaxLength(100)]
