@@ -36,5 +36,7 @@ public class TouristRouteProfile : Profile
             );
 
         CreateMap<TouristRouteUpdateDto, TouristRoute>();
+
+        CreateMap<TouristRoute, TouristRouteUpdateDto>();
     }
 }

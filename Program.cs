@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
 using TripApi.Database;
 using TripApi.Services;
 
@@ -10,27 +11,31 @@ builder.Services.AddControllers(options =>
 {
     options.ReturnHttpNotAcceptable = true;
 }).AddXmlDataContractSerializerFormatters()
-.ConfigureApiBehaviorOptions(options =>
-{
-    options.InvalidModelStateResponseFactory = context =>
+    .ConfigureApiBehaviorOptions(options =>
     {
-        var problemDetail = new ValidationProblemDetails(context.ModelState)
+        options.InvalidModelStateResponseFactory = context =>
         {
-            Type = "Valid Error",
-            Title = "数据验证失败",
-            Status = StatusCodes.Status422UnprocessableEntity,
-            Detail = "请看详细说明",
-            Instance = context.HttpContext.Request.Path
-        };
+            var problemDetail = new ValidationProblemDetails(context.ModelState)
+            {
+                Type = "Valid Error",
+                Title = "数据验证失败",
+                Status = StatusCodes.Status422UnprocessableEntity,
+                Detail = "请看详细说明",
+                Instance = context.HttpContext.Request.Path
+            };
 
-        problemDetail.Extensions.Add("traceId", context.HttpContext.TraceIdentifier);
+            problemDetail.Extensions.Add("traceId", context.HttpContext.TraceIdentifier);
 
-        return new UnprocessableEntityObjectResult(problemDetail)
-        {
-            ContentTypes = { "application/problem+json" }
+            return new UnprocessableEntityObjectResult(problemDetail)
+            {
+                ContentTypes = { "application/problem+json" }
+            };
         };
-    };
-});
+    })
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+    });
 
 builder.Services.AddTransient<ITouristRouteRepository, TouristRouteRepository>();
 builder.Services.AddTransient<ITouristRoutePictureRepository, TouristRoutePictureRepository>();

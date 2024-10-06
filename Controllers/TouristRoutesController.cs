@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using TripApi.Dtos.TouristRoute;
 using TripApi.Models;
@@ -74,6 +75,31 @@ public class TouristRoutesController : ControllerBase
         var routeFromRepo = _routeRepository.GetRouteById(routeId);
 
         _mapper.Map(routeUpdateDto, routeFromRepo);
+        _routeRepository.Save();
+
+        return NoContent();
+    }
+
+    [HttpPatch("{routeId:guid}")]
+    public IActionResult PartialUpdateRoute([FromRoute] Guid routeId,
+        [FromBody] JsonPatchDocument<TouristRouteUpdateDto> patchDocument)
+    {
+        if (!_routeRepository.RouteExists(routeId))
+        {
+            return NotFound("旅游路线找不到");
+        }
+
+        var routeFromRepo = _routeRepository.GetRouteById(routeId);
+        var routeToPatch = _mapper.Map<TouristRouteUpdateDto>(routeFromRepo);
+
+        patchDocument.ApplyTo(routeToPatch, ModelState);
+
+        if (!TryValidateModel(routeToPatch))
+        {
+            return ValidationProblem(ModelState);
+        }
+
+        _mapper.Map(routeToPatch, routeFromRepo);
         _routeRepository.Save();
 
         return NoContent();

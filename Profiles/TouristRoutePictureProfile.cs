@@ -11,5 +11,7 @@ public class TouristRoutePictureProfile : Profile
         CreateMap<TouristRoutePicture, TouristRoutePictureDto>();
 
         CreateMap<TouristRoutePictureAddDto, TouristRoutePicture>();
+
+        CreateMap<TouristRoutePicture, TouristRoutePictureAddDto>();
     }
 }
