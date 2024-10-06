@@ -34,5 +34,7 @@ public class TouristRouteProfile : Profile
                 des => des.Id,
                 opt => opt.MapFrom(src => Guid.NewGuid())
             );
+
+        CreateMap<TouristRouteUpdateDto, TouristRoute>();
     }
 }
